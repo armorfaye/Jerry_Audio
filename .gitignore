@@ -1,0 +1,56 @@
+# Python 编译文件
+__pycache__/
+
+# Python 编译文件
+*.py[cod]
+
+# 输出文件夹
+/output/
+
+# 输入文件夹
+/input/
+
+# 除了 example.png 的所有 input 文件夹内的文件
+!/input/example.png
+
+# 模型文件夹
+/models/
+
+# 临时文件夹
+/temp/
+
+# 除了 example_node.py.example 的 custom_nodes 目录下的所有文件
+!custom_nodes/example_node.py.example
+
+# 额外模型路径配置文件
+extra_model_paths.yaml
+
+# Visual Studio 和 Visual Studio Code 文件
+.vs
+.vscode/
+
+# IntelliJ IDEA 文件
+.idea/
+
+# 虚拟环境
+venv/
+
+# Web 扩展文件夹
+web/extensions/*
+
+# 除了 logging.js.example 的所有 web 扩展文件夹内的文件
+!/web/extensions/logging.js.example
+
+# 除了 core 文件夹的所有 web 扩展文件夹内的文件
+!/web/extensions/core/
+
+# UI 测试数据文件
+/tests-ui/data/object_info.json
+
+# 用户文件夹
+/user/
+
+# 日志文件
+*.log
+
+.DS_Store
