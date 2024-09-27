@@ -1,14 +1,15 @@
 from transformers import ClapModel, AutoProcessor
+from fastapi import FastAPI, Response
+import uvicorn
+import numpy as np
+import librosa
+import soundfile as sf
 
 # Load the pre-trained CLAP model
 model = ClapModel.from_pretrained("laion/clap-htsat-unfused")
 
 # Load the processor (which includes both the feature extractor and tokenizer)
 processor = AutoProcessor.from_pretrained("laion/clap-htsat-unfused")
-
-import numpy as np
-import librosa
-import soundfile as sf
 
 # Comparison Text
 input_text = [
@@ -70,20 +71,21 @@ def spectral_subtraction(input_file, output_file, noise_reduction_factor=1.0, fr
 # output_file = 'PianoWithoutNoise.wav'
 # spectral_subtraction(input_file, output_file)
 
+app = FastAPI()
 
-def CLAP(name):
-	input_file = f'{name}.wav'
+@app.post("/clap")
+async def clap():
+	input_file = 'recording.wav'
 	audio, orig_sr = librosa.load(input_file, sr=None)
 	target_sr = 48000 
 	if orig_sr != target_sr: 
 		audio = librosa.resample(y=audio, orig_sr = orig_sr, target_sr = target_sr)
-	#Process the Audio and the Text 
-	inputs = processor(text=input_text, audios=[audio], sampling_rate = 48000, return_tensors="pt", padding=True)
-	# Forward pass through the model
-	outputs = model(**inputs)
+	inputs = processor(text=input_text, audios=[audio], sampling_rate = 48000, return_tensors="pt", padding=True) #Process the Audio and the Text 
+	outputs = model(**inputs) # Forward pass through the model
 	logits_per_audio = outputs.logits_per_audio 
 	probs = logits_per_audio.softmax(dim=-1)
 	probs_arr = probs.detach().numpy()
-	return output_class[np.argmax(probs_arr)]
+	return Response(status_code = 200, content = output_class[np.argmax(probs_arr)])
 
-print(Model("guitar"))
+if __name__ == "__main__":
+	uvicorn.run(app, host="0.0.0.0", port=8100)

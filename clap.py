@@ -70,7 +70,6 @@ def spectral_subtraction(input_file, output_file, noise_reduction_factor=1.0, fr
 # output_file = 'PianoWithoutNoise.wav'
 # spectral_subtraction(input_file, output_file)
 
-
 def CLAP(name):
 	input_file = f'{name}.wav'
 	audio, orig_sr = librosa.load(input_file, sr=None)
@@ -86,4 +85,4 @@ def CLAP(name):
 	probs_arr = probs.detach().numpy()
 	return output_class[np.argmax(probs_arr)]
 
-print(Model("guitar"))
+print(CLAP("recording"))
