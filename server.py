@@ -13,17 +13,13 @@ import uvicorn
 import time 
 
 # URL and Constant 
-MIC_1 = "http://192.168.1.108:8100/audio"
-PHOTO = "http://192.168.1.108:8100/photo"
-MIC_2 = "http://192.168.1.108:8200/audio"
-MIC_3 = "http://192.168.1.108:8300/audio"
-MIC_4 = "http://192.168.1.108:8400/audio"
+PHOTO = "http://192.168.1.108:8200/photo"
 BAND =  "http://192.168.1.108:8500/display"
 SAMPLE_RATE = 48000
 FFT_ARRAYS = [None] * 4
 lock = threading.Lock()
 
-URL = "http://192.168.90.163:8100/audio"
+i = 0
 
 def ffterize(y):
 	N = len(y)
@@ -63,9 +59,9 @@ app = FastAPI()
 # Processing the 2 second clip and run all the control steps
 @app.post("/process_data") 
 async def process_data(id: int = Form(...), file: UploadFile = File(...)):
-
-	file_location = f"{id}.wav"
-	
+	global i
+	i += 1
+	file_location = f"{id} and {i}.wav"
 	with open(file_location, "wb") as buffer:
 		buffer.write(await file.read())
 	

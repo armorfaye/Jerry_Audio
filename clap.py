@@ -84,6 +84,9 @@ def CLAP(name):
 	logits_per_audio = outputs.logits_per_audio 
 	probs = logits_per_audio.softmax(dim=-1)
 	probs_arr = probs.detach().numpy()
-	return output_class[np.argmax(probs_arr)]
+	return probs_arr
+#output_class[np.argmax(probs_arr)]
 
-print(Model("guitar"))
+print(CLAP("guitar"))
+
+w
